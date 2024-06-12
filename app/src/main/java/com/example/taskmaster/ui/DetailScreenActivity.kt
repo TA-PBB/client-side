@@ -1,5 +1,6 @@
 package com.example.taskmaster.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
@@ -7,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import com.example.taskmaster.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DetailScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +20,13 @@ class DetailScreenActivity : AppCompatActivity() {
 
         val editText: EditText = findViewById(R.id.editText)
         val checkboxContainer: LinearLayout = findViewById(R.id.checkboxContainer)
+
+        val imageButton: ImageButton= findViewById(R.id.backBtn)
+        imageButton.setOnClickListener {
+            // Memulai NewActivity
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
         editText.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event?.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER) {
