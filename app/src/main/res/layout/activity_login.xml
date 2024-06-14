@@ -1,9 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.LoginActivity">
+    tools:context=".ui.LoginActivity"
+    android:orientation="vertical"
+    android:layout_margin="25sp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppinssemibold"
+        android:text="Let's Sign You In"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:paddingBottom="15sp"
+        android:paddingTop="55sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppinsmedium"
+        android:text="Welcome Back,"
+        android:textSize="20dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppinsmedium"
+        android:text="You have been missed"
+        android:textSize="20dp"
+        android:paddingBottom="80sp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppinsmedium"
+        android:hint="Username"
+        android:gravity="start|center_vertical"
+        android:background="@drawable/etstyle"
+        android:id="@+id/et_username"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppinsmedium"
+        android:layout_marginTop="15sp"
+        android:layout_marginBottom="300sp"
+        android:background="@drawable/etstyle"
+        android:gravity="start|center_vertical"
+        android:hint="Password"
+        android:id="@+id/et_password"/>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppinsmedium"
+        android:hint="Login"
+        android:textColorHint="#ffffff"
+        android:background="@drawable/rounded_background_login"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/poppinsmedium"
+        android:orientation="horizontal"
+        android:layout_marginTop="10sp"
+        android:layout_marginLeft="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account?"
+            android:textSize="15dp"
+            android:layout_marginRight="10sp"/>
+        <TextView
+            android:id="@+id/tv_register_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register Now"
+            android:textColor="#7efaff"
+            android:textSize="15dp"/>
+    </LinearLayout>
+
+</LinearLayout>
