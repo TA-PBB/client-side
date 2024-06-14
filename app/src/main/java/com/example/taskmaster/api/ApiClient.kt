@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
     private const val BASE_URL = "http://your-api-url/"
-
+    private var retrofit: Retrofit? = null
     fun create(token: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -17,5 +17,15 @@ object ApiClient {
                     .build()
             )
             .build()
+    }
+
+    fun getClient(): Retrofit {
+        if (retrofit == null) {
+            retrofit = Retrofit.Builder()
+                .baseUrl("http://YOUR_SERVER_IP:3000/")  // Ganti dengan URL server Anda
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+        return retrofit!!
     }
 }

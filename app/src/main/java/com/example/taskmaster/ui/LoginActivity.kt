@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.taskmaster.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class LoginActivity : AppCompatActivity() {
 
@@ -38,8 +39,11 @@ class LoginActivity : AppCompatActivity() {
 
         tvRegisterNow.setOnClickListener {
             // Arahkan ke aktivitas pendaftaran
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
             Toast.makeText(this, "Register Now clicked", Toast.LENGTH_SHORT).show()
         }
+
 
 
     }
