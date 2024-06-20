@@ -11,4 +11,7 @@ interface AuthService {
 
     @POST("login/")
     fun login(@Body user: User): Call<User>
+
+    @POST("logout/")
+    fun logout(): Call<Void>  // Typically, logout does not require a body
 }
