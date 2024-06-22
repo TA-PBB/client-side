@@ -32,25 +32,45 @@
         android:text="You have been missed"
         android:textSize="20dp"
         android:paddingBottom="80sp"/>
+
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:fontFamily="@font/poppinsmedium"
         android:hint="Username"
         android:gravity="start|center_vertical"
         android:background="@drawable/etstyle"
         android:id="@+id/et_username"/>
-
-    <EditText
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppinsmedium"
-        android:layout_marginTop="15sp"
-        android:layout_marginBottom="300sp"
-        android:background="@drawable/etstyle"
-        android:gravity="start|center_vertical"
-        android:hint="Password"
-        android:id="@+id/et_password"/>
+        android:layout_marginBottom="200dp"
+        android:layout_alignParentTop="true">
+
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="15sp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/etstyle"
+            android:fontFamily="@font/poppinsmedium"
+            android:gravity="start|center_vertical"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <ImageView
+            android:id="@+id/ivShowPassword"
+            android:layout_marginTop="15sp"
+            android:layout_width="30dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="15dp"
+            android:paddingRight="10dp" />
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btn_login"

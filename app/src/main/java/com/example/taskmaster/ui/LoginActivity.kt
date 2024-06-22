@@ -2,9 +2,14 @@ package com.example.taskmaster.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +31,19 @@ class LoginActivity : AppCompatActivity() {
         val etPassword = findViewById<EditText>(R.id.et_password)
         val btnLogin = findViewById<Button>(R.id.btn_login)
         val tvRegisterNow = findViewById<TextView>(R.id.tv_register_now)
+        val ivEyePassword = findViewById<ImageView>(R.id.ivShowPassword)
+        ivEyePassword.setImageResource(R.drawable.hideye)
+        ivEyePassword.setOnClickListener(View.OnClickListener {
+            if(etPassword.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
+                etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance())
+
+                ivEyePassword.setImageResource(R.drawable.hideye)
+            }else{
+                etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+                ivEyePassword.setImageResource(R.drawable.eyepassword)
+            }
+
+        })
 
         btnLogin.setOnClickListener {
             val username = etUsername.text.toString()
