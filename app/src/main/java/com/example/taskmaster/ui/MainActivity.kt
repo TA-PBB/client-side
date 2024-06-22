@@ -12,9 +12,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val username = intent.getStringExtra("USERNAME") ?: "User"
-        val greetingTextView: TextView = findViewById(R.id.greetingTextView)
-        greetingTextView.text = "Hi, $username"
+//        val username = intent.getStringExtra("USERNAME") ?: "User"
+//        val greetingTextView: TextView = findViewById(R.id.greetingTextView)
+//        greetingTextView.text = "Hi, $username"
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener {

@@ -9,17 +9,31 @@
     android:paddingRight="20dp"
     android:paddingTop="10dp"
     tools:context=".ui.MainActivity">
-    <!--Text View -->
-    <TextView
-        android:id="@+id/greetingTextView"
-        android:fontFamily="@font/poppinssemibold"
+    <!--Text View & Logout -->
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:text="Hi, User"
-        android:textColor="#000"
-        android:padding="10dp"
-        android:textSize="25dp" />
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:fontFamily="@font/poppinssemibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:text="Hi, Lucifer"
+            android:textColor="#000"
+            android:padding="10dp"
+            android:textSize="25dp" />
+
+        <ImageButton
+            android:id="@+id/logoutBtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:background="@color/white"
+            android:src="@drawable/icon_logout"/>
+    </RelativeLayout>
 
     <!--Search-->
     <com.google.android.material.textfield.TextInputLayout

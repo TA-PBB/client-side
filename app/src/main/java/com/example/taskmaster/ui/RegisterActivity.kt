@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mykotlinclientapp.api.ApiClient
@@ -21,6 +22,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var confirmPasswordEditText: EditText
     private lateinit var registerButton: Button
+    private lateinit var tvLoginNow: TextView
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +35,18 @@ class RegisterActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.etpassreg)
         confirmPasswordEditText = findViewById(R.id.etcpassreg)
         registerButton = findViewById(R.id.btnreg)
+        tvLoginNow = findViewById(R.id.tvlognow)
 
         registerButton.setOnClickListener {
             registerUser()
         }
+
+        tvLoginNow.setOnClickListener{
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            Toast.makeText(this, "Login Now clicked", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun registerUser() {
