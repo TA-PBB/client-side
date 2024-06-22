@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
-            android:textColor="@color/black"
+            android:textColorHint="@color/black"
             android:imeOptions="actionSearch"
             android:background="@drawable/rounded_background" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -79,7 +79,7 @@
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewUser"
+                    android:id="@+id/recyclerViewTaskCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
