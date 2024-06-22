@@ -34,32 +34,69 @@
         android:paddingBottom="80sp"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:fontFamily="@font/poppinsmedium"
         android:hint="Username"
         android:id="@+id/etusrnmreg"
         android:gravity="start|center_vertical"
         android:background="@drawable/etstyle" />
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="15sp"
         android:hint="Password"
         android:fontFamily="@font/poppinsmedium"
         android:id="@+id/etpassreg"
+        android:inputType="textPassword"
         android:gravity="start|center_vertical"
         android:background="@drawable/etstyle"
-        android:layout_marginTop="15sp"/>
+        />
+
+        <ImageView
+            android:id="@+id/ivShowPasswordReg"
+            android:layout_marginTop="15sp"
+            android:layout_width="30dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="15dp"
+            android:paddingRight="10dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true">
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="15sp"
+        android:layout_marginBottom="30dp"
         android:hint="Confirm Password"
         android:fontFamily="@font/poppinsmedium"
+        android:inputType="textPassword"
         android:id="@+id/etcpassreg"
         android:gravity="start|center_vertical"
         android:background="@drawable/etstyle"
-        android:layout_marginTop="15sp"
-        android:layout_marginBottom="250sp"/>
+
+        />
+        <ImageView
+            android:id="@+id/ivShowPasswordConf"
+            android:layout_marginTop="15sp"
+            android:layout_width="30dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="150dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="15dp"
+            android:paddingRight="10dp" />
+    </RelativeLayout>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

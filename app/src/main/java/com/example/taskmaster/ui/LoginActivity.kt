@@ -31,16 +31,16 @@ class LoginActivity : AppCompatActivity() {
         val etPassword = findViewById<EditText>(R.id.et_password)
         val btnLogin = findViewById<Button>(R.id.btn_login)
         val tvRegisterNow = findViewById<TextView>(R.id.tv_register_now)
-        val ivEyePassword = findViewById<ImageView>(R.id.ivShowPassword)
-        ivEyePassword.setImageResource(R.drawable.hideye)
-        ivEyePassword.setOnClickListener(View.OnClickListener {
+        val ivEyePasswordReg = findViewById<ImageView>(R.id.ivShowPassword)
+        ivEyePasswordReg.setImageResource(R.drawable.hideye)
+        ivEyePasswordReg.setOnClickListener(View.OnClickListener {
             if(etPassword.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
                 etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance())
 
-                ivEyePassword.setImageResource(R.drawable.hideye)
+                ivEyePasswordReg.setImageResource(R.drawable.hideye)
             }else{
                 etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
-                ivEyePassword.setImageResource(R.drawable.eyepassword)
+                ivEyePasswordReg.setImageResource(R.drawable.eyepassword)
             }
 
         })
