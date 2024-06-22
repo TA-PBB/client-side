@@ -43,7 +43,7 @@ class RegisterActivity : AppCompatActivity() {
 
         tvLoginNow.setOnClickListener{
             val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent) git gg
+            startActivity(intent) 
         }
 
     }
