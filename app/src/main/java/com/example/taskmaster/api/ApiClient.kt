@@ -1,6 +1,5 @@
 package com.example.mykotlinclientapp.api
 
-import com.example.taskmaster.api.AuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -10,7 +9,7 @@ object ApiClient {
     private const val BASE_URL = "https://web-service-production-6319.up.railway.app/api/"
     private var retrofit: Retrofit? = null
 
-    private fun createClient(token: String?): OkHttpClient {
+    private fun createClient(token: String? = null): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -18,7 +17,12 @@ object ApiClient {
             .addInterceptor(logging)
 
         token?.let {
-            builder.addInterceptor(AuthInterceptor(it))
+            builder.addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("Authorization", "Token $it")
+                    .build()
+                chain.proceed(request)
+            }
         }
 
         return builder.build()
@@ -33,7 +37,7 @@ object ApiClient {
     }
 
     fun getClient(token: String? = null): Retrofit {
-        if (retrofit == null) {
+        if (retrofit == null || token != null) {  // Reinitialize if a token is provided
             retrofit = create(token)
         }
         return retrofit!!

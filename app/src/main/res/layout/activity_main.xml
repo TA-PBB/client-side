@@ -20,6 +20,7 @@
             android:fontFamily="@font/poppinssemibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/greetingTextView"
             android:layout_column="1"
             android:text="Hi, Lucifer"
             android:textColor="#000"

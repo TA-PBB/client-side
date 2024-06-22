@@ -1,8 +1,8 @@
 package com.example.taskmaster.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -18,7 +18,6 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
-    @SuppressLint("WrongViewCast", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -33,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
             val password = etPassword.text.toString()
 
             if (username.isNotEmpty() && password.isNotEmpty()) {
-                // Perform login action
                 loginUser(username, password)
             } else {
                 Toast.makeText(this, "Please enter both username and password", Toast.LENGTH_SHORT).show()
@@ -41,33 +39,41 @@ class LoginActivity : AppCompatActivity() {
         }
 
         tvRegisterNow.setOnClickListener {
-            // Navigate to the registration activity
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
-            Toast.makeText(this, "Register Now clicked", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun loginUser(username: String, password: String) {
         val user = User(username, password)
-        val apiService = ApiClient.getClient("").create(AuthService::class.java)
+        val apiService = ApiClient.getClient(null).create(AuthService::class.java) // No token
         val call = apiService.login(user)
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(this@LoginActivity, "Login Successful", Toast.LENGTH_SHORT).show()
-                    // Handle successful login and navigate to the main activity
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.putExtra("USERNAME", username)
-                    startActivity(intent)
-                    finish()
+                    val loggedInUser = response.body()
+                    if (loggedInUser != null) {
+                        Toast.makeText(this@LoginActivity, "Login Successful", Toast.LENGTH_SHORT).show()
+
+                        // Store token in shared preferences
+                        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                        sharedPreferences.edit().putString("token", loggedInUser.token).apply()
+
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        intent.putExtra("USERNAME", username)
+                        startActivity(intent)
+                        finish()
+                    }
                 } else {
-                    Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
+                    val errorBody = response.errorBody()?.string()
+                    Toast.makeText(this@LoginActivity, "Login failed: $errorBody", Toast.LENGTH_SHORT).show()
+                    Log.e("LoginActivity", "Login failed: $errorBody")
                 }
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Toast.makeText(this@LoginActivity, "An error occurred", Toast.LENGTH_SHORT).show()
+                Log.e("LoginActivity", "An error occurred: ${t.message}", t)
             }
         })
     }

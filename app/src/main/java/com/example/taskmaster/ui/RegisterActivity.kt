@@ -44,7 +44,6 @@ class RegisterActivity : AppCompatActivity() {
         tvLoginNow.setOnClickListener{
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            Toast.makeText(this, "Login Now clicked", Toast.LENGTH_SHORT).show()
         }
 
     }
