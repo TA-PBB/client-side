@@ -15,7 +15,7 @@ class SplashActivity : AppCompatActivity() {
         // Simulate loading process
         Handler(Looper.getMainLooper()).postDelayed({
             // Start the main activity after the splash screen
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
             finish()
         }, 1000) // Delay in milliseconds (e.g., 3000ms = 3 seconds)

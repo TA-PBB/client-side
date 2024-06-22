@@ -1,5 +1,7 @@
 package com.example.taskmaster.ui
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -19,10 +21,13 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var confirmPasswordEditText: EditText
     private lateinit var registerButton: Button
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
 
         usernameEditText = findViewById(R.id.etusrnmreg)
         passwordEditText = findViewById(R.id.etpassreg)
@@ -45,30 +50,77 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         if (password != confirmPassword) {
-            Toast.makeText(this, "Password and Confirm Password must match", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Password and Confirm Password must match", Toast.LENGTH_SHORT)
+                .show()
             return
         }
 
         val user = User(username, password)
 
-        val apiService = ApiClient.getClient("").create(AuthService::class.java)
+        val apiService = ApiClient.create(null).create(AuthService::class.java)
         val call = apiService.register(user)
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(this@RegisterActivity, "User registered successfully", Toast.LENGTH_SHORT).show()
-                    // Navigate to login activity or main activity
-                    // For example:
-                    // val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                    // startActivity(intent)
-                    // finish()
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "User registered successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    loginUser(username, password)
                 } else {
-                    Toast.makeText(this@RegisterActivity, "Registration failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegisterActivity, "Registration failed", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Toast.makeText(this@RegisterActivity, "An error occurred", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@RegisterActivity, "An error occurred", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+    }
+
+    private fun loginUser(username: String, password: String) {
+        val user = User(username, password)
+        val apiService = ApiClient.create(null).create(AuthService::class.java)
+        val call = apiService.login(user)
+        call.enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val token = response.body()?.token
+                    if (token != null) {
+                        val editor = sharedPreferences.edit()
+                        editor.putString("token", token)
+                        editor.apply()
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "Login successful",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // Navigate to main activity with username
+                        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                        intent.putExtra("USERNAME", username)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "Login failed: No token received",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    Toast.makeText(this@RegisterActivity, "Login failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "An error occurred during login",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }

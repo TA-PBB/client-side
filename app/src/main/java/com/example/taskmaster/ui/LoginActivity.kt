@@ -57,10 +57,10 @@ class LoginActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     Toast.makeText(this@LoginActivity, "Login Successful", Toast.LENGTH_SHORT).show()
                     // Handle successful login and navigate to the main activity
-                    // For example:
-                    // val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    // startActivity(intent)
-                    // finish()
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    intent.putExtra("USERNAME", username)
+                    startActivity(intent)
+                    finish()
                 } else {
                     Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
                 }

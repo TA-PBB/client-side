@@ -11,11 +11,12 @@
     tools:context=".ui.MainActivity">
     <!--Text View -->
     <TextView
+        android:id="@+id/greetingTextView"
         android:fontFamily="@font/poppinssemibold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
-        android:text="Hi, Lucifer"
+        android:text="Hi, User"
         android:textColor="#000"
         android:padding="10dp"
         android:textSize="25dp" />
