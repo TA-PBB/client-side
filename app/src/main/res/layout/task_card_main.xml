@@ -48,7 +48,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewCheckBoxCard"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
+                app:spanCount="1"
                 android:layout_width="273dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

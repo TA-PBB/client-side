@@ -19,7 +19,7 @@ object ApiClient {
         token?.let {
             builder.addInterceptor { chain ->
                 val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Token $it")
+                    .addHeader("Authorization", "Bearer <your-token>")
                     .build()
                 chain.proceed(request)
             }
