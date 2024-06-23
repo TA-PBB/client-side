@@ -1,7 +1,6 @@
 package com.example.taskmaster.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -10,8 +9,9 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import com.example.taskmaster.api.ApiClient
+import androidx.appcompat.app.AppCompatActivity
 import com.example.taskmaster.R
+import com.example.taskmaster.api.ApiClient
 import com.example.taskmaster.api.TaskService
 import com.example.taskmaster.model.Task
 import com.example.taskmaster.model.TaskItem
@@ -89,6 +89,8 @@ class DetailPage : AppCompatActivity() {
                 if (newTaskText.isNotEmpty()) {
                     addNewCheckbox(container, newTaskText)
                     newEditText.text.clear()
+                    newEditText.clearFocus()
+                    newEditText.requestFocus()
                 }
                 true
             } else {
@@ -106,6 +108,7 @@ class DetailPage : AppCompatActivity() {
         }
 
         container.addView(newCheckboxLayout)
+        newEditText.requestFocus() // Set focus to the new EditText
     }
 
     private fun loadTaskData(taskId: Int) {

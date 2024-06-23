@@ -87,6 +87,9 @@ class LoginActivity : AppCompatActivity() {
                             val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
                             sharedPreferences.edit().putString("token", token).apply()
 
+                            // Initialize ApiClient with the new token
+                            ApiClient.getClient(token)
+
                             // Proceed to MainActivity
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra("USERNAME", username)
