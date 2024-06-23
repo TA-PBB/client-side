@@ -1,10 +1,9 @@
 package com.example.taskmaster.ui
 
-import DetailScreenActivity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -34,10 +33,22 @@ class MainActivity : AppCompatActivity() {
         val greetingTextView: TextView = findViewById(R.id.greetingTextView)
         greetingTextView.text = "Hi, $username"
 
+
+        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        if (token == null) {
+            // Redirect to LoginActivity
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            // User is already logged in, proceed with main activity functionality
+        }
+
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener {
             // Start DetailScreenActivity
-            val intent = Intent(this, DetailScreenActivity::class.java)
+            val intent = Intent(this, DetailPage::class.java)
             startActivity(intent)
         }
     }
@@ -46,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
         val token = sharedPreferences.getString("token", null)
 
-        if (token != null) {
+        if (token!= null) {
             val apiService = ApiClient.getClient(token).create(AuthService::class.java)
             val call = apiService.logout()
             call.enqueue(object : Callback<Void> {
@@ -57,11 +68,11 @@ class MainActivity : AppCompatActivity() {
                         sharedPreferences.edit().remove("token").apply()
 
                         // Navigate to LoginActivity
-                        val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                            val intent = Intent(this@MainActivity, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(this@MainActivity, "Logout failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "Logout failed: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -73,5 +84,4 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "No token found, unable to logout", Toast.LENGTH_SHORT).show()
         }
     }
-
 }

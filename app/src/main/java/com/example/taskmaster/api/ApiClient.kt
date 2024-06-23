@@ -1,5 +1,6 @@
 package com.example.mykotlinclientapp.api
 
+import AuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,12 +18,7 @@ object ApiClient {
             .addInterceptor(logging)
 
         token?.let {
-            builder.addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer <your-token>")
-                    .build()
-                chain.proceed(request)
-            }
+            builder.addInterceptor(AuthInterceptor(token))
         }
 
         return builder.build()

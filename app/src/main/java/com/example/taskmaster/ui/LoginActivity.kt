@@ -6,12 +6,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mykotlinclientapp.api.ApiClient
 import com.example.taskmaster.R
@@ -33,16 +28,25 @@ class LoginActivity : AppCompatActivity() {
         val tvRegisterNow = findViewById<TextView>(R.id.tv_register_now)
         val ivEyePassword = findViewById<ImageView>(R.id.ivShowPassword)
         ivEyePassword.setImageResource(R.drawable.hideye)
-        ivEyePassword.setOnClickListener(View.OnClickListener {
-            if(etPassword.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
-                etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance())
 
+        // Check if token exists
+        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
+        if (token != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
+
+        ivEyePassword.setOnClickListener(View.OnClickListener {
+            if (etPassword.transformationMethod == HideReturnsTransformationMethod.getInstance()) {
+                etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
                 ivEyePassword.setImageResource(R.drawable.hideye)
-            }else{
-                etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+            } else {
+                etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 ivEyePassword.setImageResource(R.drawable.eyepassword)
             }
-
         })
 
         btnLogin.setOnClickListener {
