@@ -10,7 +10,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import com.example.mykotlinclientapp.api.ApiClient
+import com.example.taskmaster.api.ApiClient
 import com.example.taskmaster.R
 import com.example.taskmaster.api.TaskService
 import com.example.taskmaster.model.Task

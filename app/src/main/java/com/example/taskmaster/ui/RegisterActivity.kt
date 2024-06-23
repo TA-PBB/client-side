@@ -12,8 +12,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mykotlinclientapp.api.ApiClient
 import com.example.taskmaster.R
+import com.example.taskmaster.api.ApiClient
 import com.example.taskmaster.api.AuthService
 import com.example.taskmaster.model.User
 import retrofit2.Call
@@ -95,7 +95,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val user = User(username, password)
 
-        val apiService = ApiClient.create(null).create(AuthService::class.java)
+        val apiService = ApiClient.getClient(null).create(AuthService::class.java)
         val call = apiService.register(user)
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -122,7 +122,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun loginUser(username: String, password: String) {
         val user = User(username, password)
-        val apiService = ApiClient.create(null).create(AuthService::class.java) // No token
+        val apiService = ApiClient.getClient(null).create(AuthService::class.java) // No token
         val call = apiService.login(user)
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
