@@ -26,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
         val etPassword = findViewById<EditText>(R.id.et_password)
         val btnLogin = findViewById<Button>(R.id.btn_login)
         val tvRegisterNow = findViewById<TextView>(R.id.tv_register_now)
+<<<<<<< HEAD
         val ivEyePassword = findViewById<ImageView>(R.id.ivShowPassword)
         ivEyePassword.setImageResource(R.drawable.hideye)
 
@@ -46,6 +47,18 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 ivEyePassword.setImageResource(R.drawable.eyepassword)
+=======
+        val ivEyePasswordReg = findViewById<ImageView>(R.id.ivShowPassword)
+        ivEyePasswordReg.setImageResource(R.drawable.hideye)
+        ivEyePasswordReg.setOnClickListener(View.OnClickListener {
+            if(etPassword.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
+                etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance())
+
+                ivEyePasswordReg.setImageResource(R.drawable.hideye)
+            }else{
+                etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+                ivEyePasswordReg.setImageResource(R.drawable.eyepassword)
+>>>>>>> 9b3b8861aa80bdfcfe5a73bb9a996013363857a6
             }
         })
 
