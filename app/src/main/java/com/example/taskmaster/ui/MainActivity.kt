@@ -1,12 +1,11 @@
 package com.example.taskmaster.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mykotlinclientapp.api.ApiClient
 import com.example.taskmaster.R
 import com.example.taskmaster.api.AuthService
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         val greetingTextView: TextView = findViewById(R.id.greetingTextView)
         greetingTextView.text = "Hi, $username"
 
-
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
         val token = sharedPreferences.getString("token", null)
         if (token == null) {
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
         val token = sharedPreferences.getString("token", null)
 
-        if (token!= null) {
+        if (token != null) {
             val apiService = ApiClient.getClient(token).create(AuthService::class.java)
             val call = apiService.logout()
             call.enqueue(object : Callback<Void> {
@@ -68,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                         sharedPreferences.edit().remove("token").apply()
 
                         // Navigate to LoginActivity
-                            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                        val intent = Intent(this@MainActivity, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {

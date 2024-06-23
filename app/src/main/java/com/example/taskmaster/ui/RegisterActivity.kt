@@ -100,8 +100,14 @@ class RegisterActivity : AppCompatActivity() {
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(this@RegisterActivity, "User registered successfully", Toast.LENGTH_SHORT).show()
-                    loginUser(username, password)
+                    val newUser = response.body()
+                    if (newUser != null) {
+                        Toast.makeText(this@RegisterActivity, "User registered successfully", Toast.LENGTH_SHORT).show()
+                        // Auto login after successful registration
+                        loginUser(username, password)
+                    } else {
+                        Toast.makeText(this@RegisterActivity, "Registration failed", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(this@RegisterActivity, "Registration failed", Toast.LENGTH_SHORT).show()
                 }
@@ -113,26 +119,30 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
+
     private fun loginUser(username: String, password: String) {
         val user = User(username, password)
-        val apiService = ApiClient.create(null).create(AuthService::class.java)
+        val apiService = ApiClient.create(null).create(AuthService::class.java) // No token
         val call = apiService.login(user)
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful && response.body() != null) {
-                    val token = response.body()?.token
-                    if (token != null) {
-                        val editor = sharedPreferences.edit()
-                        editor.putString("token", token)
-                        editor.apply()
-                        Toast.makeText(this@RegisterActivity, "Login successful", Toast.LENGTH_SHORT).show()
-                        // Navigate to main activity with username
-                        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-                        intent.putExtra("USERNAME", username)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Toast.makeText(this@RegisterActivity, "Login failed: No token received", Toast.LENGTH_SHORT).show()
+                    val loggedInUser = response.body()
+                    if (loggedInUser != null) {
+                        val token = loggedInUser.token
+                        if (token != null) {
+                            // Simpan token di SharedPreferences
+                            val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                            sharedPreferences.edit().putString("token", token).apply()
+
+                            // Lanjutkan ke MainActivity
+                            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                            intent.putExtra("USERNAME", username)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this@RegisterActivity, "Login failed: No token received", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 } else {
                     Toast.makeText(this@RegisterActivity, "Login failed", Toast.LENGTH_SHORT).show()
@@ -144,4 +154,5 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
     }
+
 }

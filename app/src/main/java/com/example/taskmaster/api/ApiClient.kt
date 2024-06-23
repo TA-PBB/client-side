@@ -1,39 +1,32 @@
-package com.example.mykotlinclientapp.api
-
-import AuthInterceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
+
     private const val BASE_URL = "https://web-service-production-6319.up.railway.app/api/"
+
     private var retrofit: Retrofit? = null
 
-    private fun createClient(token: String? = null): OkHttpClient {
-        val logging = HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+    fun create(token: String?): Retrofit {
+        if (retrofit == null) {
+            val clientBuilder = OkHttpClient.Builder()
+            if (token != null) {
+                clientBuilder.addInterceptor(AuthInterceptor(token))
+            }
+            val client = clientBuilder.build()
 
-        val builder = OkHttpClient.Builder()
-            .addInterceptor(logging)
-
-        token?.let {
-            builder.addInterceptor(AuthInterceptor(token))
+            retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
         }
-
-        return builder.build()
+        return retrofit!!
     }
 
-    fun create(token: String? = null): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(createClient(token))
-            .build()
-    }
-
-    fun getClient(token: String? = null): Retrofit {
-        if (retrofit == null || token != null) {  // Reinitialize if a token is provided
+    fun getClient(token: String): Retrofit {
+        if (retrofit == null || (retrofit?.client()?.interceptors()?.none { it is AuthInterceptor } ?: true)) {
             retrofit = create(token)
         }
         return retrofit!!
