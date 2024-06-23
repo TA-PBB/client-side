@@ -1,17 +1,25 @@
-package com.example.taskmaster.adapter
-
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmaster.R
+import com.example.taskmaster.api.TaskService
 import com.example.taskmaster.model.Task
+import com.example.taskmaster.model.TaskItem
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class TaskAdapter(private var tasks: List<Task>, private val onDeleteClickListener: OnDeleteClickListener) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class   TaskAdapter(private var tasks: List<Task>, private val taskService: TaskService,    private val listener: OnTaskClickListener) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    interface OnDeleteClickListener {
+    interface OnTaskClickListener {
+        fun onTaskClick(taskId: Int, taskName: String)
         fun onDeleteClick(task: Task)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -37,20 +45,55 @@ class TaskAdapter(private var tasks: List<Task>, private val onDeleteClickListen
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val taskTitleTextView: TextView = itemView.findViewById(R.id.Task)
         private val deleteButton: ImageButton = itemView.findViewById(R.id.deleteButton)
-        private val recyclerViewTaskItems: RecyclerView =
-            itemView.findViewById(R.id.recyclerViewCheckBoxCard)
+        private val recyclerViewTaskItems: RecyclerView = itemView.findViewById(R.id.recyclerViewCheckBoxCard)
+
 
         fun bind(task: Task) {
             taskTitleTextView.text = task.title
-            // Set up RecyclerView for Task Items here if needed
-            // Example:
-            // val taskItemsAdapter = TaskItemsAdapter(task.items)
-            // recyclerViewTaskItems.adapter = taskItemsAdapter
+
+            val taskItemsAdapter = TaskItemAdapter(emptyList()) // Initialize adapter with empty list
+            recyclerViewTaskItems.layoutManager = LinearLayoutManager(itemView.context)
+            recyclerViewTaskItems.adapter = taskItemsAdapter
+
+            // Load task items for this task
+            loadTaskItems(task.id, taskItemsAdapter)
+
 
             // Handle delete button click if needed
             deleteButton.setOnClickListener {
-                onDeleteClickListener.onDeleteClick(task)
+                listener.onDeleteClick(task)
+            }
+            itemView.setOnClickListener {
+                listener.onTaskClick(task.id, task.title)
             }
         }
     }
+
+    private fun loadTaskItems(taskId: Int, adapter: TaskItemAdapter) {
+        val call = taskService.getTaskItems(taskId)
+
+        call.enqueue(object : Callback<List<TaskItem>> {
+            override fun onResponse(call: Call<List<TaskItem>>, response: Response<List<TaskItem>>) {
+                if (response.isSuccessful) {
+                    val taskItems = response.body()
+                    Log.d("Body Task", taskItems.toString())
+//                    Log.d("Body Task", "Success")
+                    taskItems?.let {
+                        adapter.updateTaskItems(it.take(3)) // Update RecyclerView adapter with fetched task items, limit to 4
+                    }
+                } else {
+                    Log.d("TaskItem", "Failed to retrieve")
+//                    Toast.makeText(itemView.context, "Failed to retrieve task items: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<TaskItem>>, t: Throwable) {
+                Log.d("TaskItem", "Failure to retrieve")
+//                Toast.makeText(itemView.context, "Failed to retrieve task items: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 }
+
+

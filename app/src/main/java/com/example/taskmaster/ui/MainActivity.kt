@@ -1,5 +1,6 @@
 package com.example.taskmaster.ui
 
+import TaskAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,20 +8,21 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmaster.R
 import com.example.taskmaster.api.ApiClient
 import com.example.taskmaster.api.AuthService
-import com.example.taskmaster.adapter.TaskAdapter
 import com.example.taskmaster.api.TaskService
 import com.example.taskmaster.model.Task
+import com.example.taskmaster.model.TaskItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity() ,  TaskAdapter.OnDeleteClickListener{
+class MainActivity : AppCompatActivity() ,  TaskAdapter.OnTaskClickListener{
 
     private lateinit var logoutButton: ImageButton
     private lateinit var taskAdapter: TaskAdapter
@@ -34,13 +36,12 @@ class MainActivity : AppCompatActivity() ,  TaskAdapter.OnDeleteClickListener{
         setContentView(R.layout.activity_main)
 
         recyclerView = findViewById(R.id.recyclerViewTaskCard)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        taskAdapter = TaskAdapter(emptyList(), this) // Initialize adapter with empty list
+        taskAdapter = TaskAdapter(emptyList(),taskService ,this) // Initialize adapter with empty list
         recyclerView.adapter = taskAdapter
 
         getTasks()
-
         logoutButton = findViewById(R.id.logoutBtn)
 
         logoutButton.setOnClickListener {
@@ -110,7 +111,7 @@ class MainActivity : AppCompatActivity() ,  TaskAdapter.OnDeleteClickListener{
             override fun onResponse(call: Call<List<Task>>, response: Response<List<Task>>) {
                 if (response.isSuccessful) {
                     val tasks = response.body()
-                    Log.d("Body Task", tasks.toString())
+//                    Log.d("Body Task", tasks.toString())
 //                    taskAdapter.updateTasks(tasks)
                     tasks?.let {
                         taskAdapter.updateTasks(it) // Update RecyclerView adapter with fetched tasks
@@ -144,6 +145,13 @@ class MainActivity : AppCompatActivity() ,  TaskAdapter.OnDeleteClickListener{
                 Toast.makeText(this@MainActivity, "An error occurred while deleting task", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    override fun onTaskClick(taskId: Int, taskName: String) {
+        val intent = Intent(this, DetailPage::class.java)
+        intent.putExtra("TASK_ID", taskId)
+        intent.putExtra("TASK_NAME", taskName)
+        startActivity(intent)
     }
 
     override fun onDeleteClick(task: Task) {
