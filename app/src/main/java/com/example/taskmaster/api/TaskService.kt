@@ -4,10 +4,11 @@ import com.example.taskmaster.model.Task
 import com.example.taskmaster.model.TaskItem
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
-import retrofit2.http.DELETE
 import retrofit2.http.Path
 
 interface TaskService {
@@ -41,4 +42,10 @@ interface TaskService {
 
     @DELETE("tasks/{task_id}/items/{id}/")
     fun deleteTaskItem(@Path("task_id") taskId: Int, @Path("id") id: Int): Call<Void>
+
+    @GET("tasks/{task_id}/items/")
+    fun getTaskItems(
+        @Path("task_id") taskId: Int,
+        @Header("Authorization") token: String
+    ): Call<List<TaskItem>>
 }

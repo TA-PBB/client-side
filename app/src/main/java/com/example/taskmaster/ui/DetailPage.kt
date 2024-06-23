@@ -89,8 +89,6 @@ class DetailPage : AppCompatActivity() {
                 if (newTaskText.isNotEmpty()) {
                     addNewCheckbox(container, newTaskText)
                     newEditText.text.clear()
-                    newEditText.clearFocus()
-                    newEditText.requestFocus()
                 }
                 true
             } else {
@@ -107,9 +105,9 @@ class DetailPage : AppCompatActivity() {
             }
         }
 
-        container.addView(newCheckboxLayout)
-        newEditText.requestFocus() // Set focus to the new EditText
+        container.addView(newCheckboxLayout, container.childCount) // Tambahkan di akhir
     }
+
 
     private fun loadTaskData(taskId: Int) {
         taskService.getTaskItems(taskId).enqueue(object : Callback<List<TaskItem>> {
