@@ -9,6 +9,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.DELETE
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TaskService {
 
@@ -41,4 +42,8 @@ interface TaskService {
 
     @DELETE("tasks/{task_id}/items/{id}/")
     fun deleteTaskItem(@Path("task_id") taskId: Int, @Path("id") id: Int): Call<Void>
+
+    @GET("tasks/user/{user_id}/")
+    fun getTasksByUser(@Query("user_id") userId: Int): Call<List<Task>>
+
 }

@@ -43,31 +43,28 @@ class RegisterActivity : AppCompatActivity() {
         tvLoginNow = findViewById(R.id.tvlognow)
         ivEyePasswordRegister = findViewById(R.id.ivShowPasswordReg)
         ivEyePasswordRegister.setImageResource(R.drawable.hideye)
-        ivEyePasswordRegister.setOnClickListener(View.OnClickListener {
-            if(passwordEditText.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
-                passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance())
-
+        ivEyePasswordRegister.setOnClickListener {
+            if (passwordEditText.transformationMethod == HideReturnsTransformationMethod.getInstance()) {
+                passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
                 ivEyePasswordRegister.setImageResource(R.drawable.hideye)
-            }else{
-                passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+            } else {
+                passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 ivEyePasswordRegister.setImageResource(R.drawable.eyepassword)
             }
-
-        })
+        }
 
         val ivEyePasswordConfirm = findViewById<ImageView>(R.id.ivShowPasswordConf)
         ivEyePasswordConfirm.setImageResource(R.drawable.hideye)
-        ivEyePasswordConfirm.setOnClickListener(View.OnClickListener {
-            if(confirmPasswordEditText.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
-                confirmPasswordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance())
-
+        ivEyePasswordConfirm.setOnClickListener {
+            if (confirmPasswordEditText.transformationMethod == HideReturnsTransformationMethod.getInstance()) {
+                confirmPasswordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
                 ivEyePasswordConfirm.setImageResource(R.drawable.hideye)
-            }else{
-                confirmPasswordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+            } else {
+                confirmPasswordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 ivEyePasswordConfirm.setImageResource(R.drawable.eyepassword)
             }
+        }
 
-        })
         registerButton.setOnClickListener {
             registerUser()
         }
@@ -119,10 +116,9 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
-
     private fun loginUser(username: String, password: String) {
         val user = User(username, password)
-        val apiService = ApiClient.getClient(null).create(AuthService::class.java) // No token
+        val apiService = ApiClient.getClient(null).create(AuthService::class.java)
         val call = apiService.login(user)
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -131,16 +127,16 @@ class RegisterActivity : AppCompatActivity() {
                     if (loggedInUser != null) {
                         val token = loggedInUser.token
                         if (token != null) {
-                            // Simpan token di SharedPreferences
                             val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
-                            sharedPreferences.edit().putString("token", token).apply()
+                            with (sharedPreferences.edit()) {
+                                putString("token", token)
+                                putString("username", username) // Save username
+                                apply()
+                            }
 
-                            // Initialize ApiClient with the new token
                             ApiClient.getClient(token)
 
-                            // Lanjutkan ke MainActivity
                             val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-                            intent.putExtra("USERNAME", username)
                             startActivity(intent)
                             finish()
                         } else {
@@ -157,5 +153,4 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
     }
-
 }

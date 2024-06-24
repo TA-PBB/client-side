@@ -3,6 +3,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
@@ -15,9 +16,10 @@ import com.example.taskmaster.model.TaskItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Locale
 
 class   TaskAdapter(private var tasks: List<Task>, private val taskService: TaskService,    private val listener: OnTaskClickListener) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
-
+    private var tasksFiltered: List<Task> = tasks
     interface OnTaskClickListener {
         fun onTaskClick(taskId: Int, taskName: String)
         fun onDeleteClick(task: Task)
@@ -93,6 +95,31 @@ class   TaskAdapter(private var tasks: List<Task>, private val taskService: Task
             }
         })
     }
+
+    fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val filterResults = FilterResults()
+                if (constraint.isNullOrBlank()) {
+                    filterResults.values = tasks
+                } else {
+                    val searchTerm = constraint.toString().toLowerCase(Locale.getDefault())
+                    val filteredList = tasks.filter {
+                        it.title.toLowerCase(Locale.getDefault()).contains(searchTerm)
+                    }
+                    filterResults.values = filteredList
+                }
+                return filterResults
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                tasksFiltered = results?.values as List<Task>
+                notifyDataSetChanged()
+            }
+        }
+    }
+
 
 }
 

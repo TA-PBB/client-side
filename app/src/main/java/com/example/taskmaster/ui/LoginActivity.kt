@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginUser(username: String, password: String) {
         val user = User(username, password)
-        val apiService = ApiClient.getClient(null).create(AuthService::class.java) // No token
+        val apiService = ApiClient.getClient(null).create(AuthService::class.java)
         val call = apiService.login(user)
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -83,16 +83,16 @@ class LoginActivity : AppCompatActivity() {
                     if (loggedInUser != null) {
                         val token = loggedInUser.token
                         if (token != null) {
-                            // Save token in SharedPreferences
                             val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
-                            sharedPreferences.edit().putString("token", token).apply()
+                            with (sharedPreferences.edit()) {
+                                putString("token", token)
+                                putString("username", username) // Save username
+                                apply()
+                            }
 
-                            // Initialize ApiClient with the new token
                             ApiClient.getClient(token)
 
-                            // Proceed to MainActivity
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            intent.putExtra("USERNAME", username)
                             startActivity(intent)
                             finish()
                         } else {
@@ -109,5 +109,4 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
-
 }

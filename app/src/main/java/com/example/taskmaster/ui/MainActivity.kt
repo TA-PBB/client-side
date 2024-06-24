@@ -3,6 +3,8 @@ package com.example.taskmaster.ui
 import TaskAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
@@ -18,6 +20,7 @@ import com.example.taskmaster.api.TaskService
 import com.example.taskmaster.model.Task
 import com.example.taskmaster.model.TaskItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +33,7 @@ class MainActivity : AppCompatActivity() ,  TaskAdapter.OnTaskClickListener{
     private val sharedPreferences by lazy { getSharedPreferences("app_prefs", MODE_PRIVATE) }
     private val token by lazy { sharedPreferences.getString("token", null) }
     private val taskService by lazy { ApiClient.getClient(token).create(TaskService::class.java) }
+    private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +44,8 @@ class MainActivity : AppCompatActivity() ,  TaskAdapter.OnTaskClickListener{
 
         taskAdapter = TaskAdapter(emptyList(),taskService ,this) // Initialize adapter with empty list
         recyclerView.adapter = taskAdapter
+
+        setupSearchFunctionality()
 
         getTasks()
         logoutButton = findViewById(R.id.logoutBtn)
@@ -84,7 +90,8 @@ class MainActivity : AppCompatActivity() ,  TaskAdapter.OnTaskClickListener{
                     if (response.isSuccessful) {
                         Toast.makeText(this@MainActivity, "Logout Successful", Toast.LENGTH_SHORT).show()
                         // Clear session data
-                        sharedPreferences.edit().remove("token").apply()
+//                        sharedPreferences.edit().remove("token").apply()
+                        sharedPreferences.edit().clear().remove("token").apply()
 
                         // Navigate to LoginActivity
                         val intent = Intent(this@MainActivity, LoginActivity::class.java)
@@ -157,4 +164,18 @@ class MainActivity : AppCompatActivity() ,  TaskAdapter.OnTaskClickListener{
     override fun onDeleteClick(task: Task) {
         deleteTask(task)
     }
+
+    private fun setupSearchFunctionality() {
+        val txtSearch = findViewById<TextInputEditText>(R.id.txtSearch)
+        txtSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                taskAdapter.getFilter().filter(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
 }
