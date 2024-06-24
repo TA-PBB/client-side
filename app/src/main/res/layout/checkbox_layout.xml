@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingLeft="15dp">
+    >
 
     <CheckBox
         android:id="@+id/checkbox"
@@ -22,6 +22,7 @@
         android:fontFamily="@font/poppinsregular"
         android:singleLine="true"
         android:hint="description"
+        android:textSize="12dp"
         android:imeOptions="actionDone"
         android:inputType="text" />
 </LinearLayout>
