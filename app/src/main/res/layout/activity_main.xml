@@ -33,7 +33,7 @@
             android:layout_height="60dp"
             android:layout_alignParentRight="true"
             android:background="@color/white"
-            android:src="@drawable/icon_logout"/>
+            android:src="@drawable/ic_logout"/>
     </RelativeLayout>
 
     <!--Search-->
