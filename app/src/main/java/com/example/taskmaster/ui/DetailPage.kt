@@ -10,6 +10,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.taskmaster.R
 import com.example.taskmaster.api.ApiClient
@@ -19,6 +20,7 @@ import com.example.taskmaster.model.TaskItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class DetailPage : AppCompatActivity() {
 
@@ -51,10 +53,10 @@ class DetailPage : AppCompatActivity() {
         }
 
         backButton.setOnClickListener {
-            saveData {
+
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-            }
+
         }
 
         editText.setOnEditorActionListener { _, actionId, event ->
@@ -163,6 +165,7 @@ class DetailPage : AppCompatActivity() {
                         val errorBody = response.errorBody()?.string()
                         Log.e("DetailPage", "Failed to update task item: ${response.code()} $errorBody")
                         Log.e("DetailPage", "Response message: ${response.message()}")
+
                     }
                 }
 
@@ -220,9 +223,11 @@ class DetailPage : AppCompatActivity() {
                     val savedTask = response.body()!!
                     Log.e("DetailPage", "Response success: $savedTask")
                     saveTaskItems(savedTask.id, onComplete)
+                    Toast.makeText(this@DetailPage, "Task saved successfully", Toast.LENGTH_SHORT).show()
                 }else {
                     Log.e("DetailPage", "Save task failed with response code: ${response.code()}")
                     Log.e("DetailPage", "Response message: ${response.message()}")
+                    Toast.makeText(this@DetailPage, "Task saved Failed", Toast.LENGTH_SHORT).show()
                 }
             }
 

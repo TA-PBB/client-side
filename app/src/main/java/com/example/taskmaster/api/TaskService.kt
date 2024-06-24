@@ -19,6 +19,9 @@ interface TaskService {
     @GET("tasks/")
     fun getTasks(): Call<List<Task>>
 
+    @GET("tasks/search/")
+    fun searchTasks(@Query("search") query: String): Call<List<Task>>
+
     @GET("tasks/{id}/")
     fun getTask(@Path("id") id: Int): Call<Task>
 

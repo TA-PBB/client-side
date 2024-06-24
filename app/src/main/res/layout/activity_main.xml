@@ -13,7 +13,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="2dp"
         android:layout_alignParentTop="true">
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_height="60dp"
             android:layout_alignParentRight="true"
             android:background="@color/white"
-            android:src="@drawable/icon_logout"/>
+            android:src="@drawable/ic_logout"/>
     </RelativeLayout>
 
     <!--Search-->
@@ -45,7 +45,6 @@
         android:layout_alignParentStart="true"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         app:startIconDrawable="@drawable/iconsearch"
         app:endIconMode="clear_text">
